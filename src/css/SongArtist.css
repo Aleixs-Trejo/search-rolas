@@ -1,0 +1,71 @@
+.song__artist__section{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tag__link{
+  color: #fff;
+}
+
+.song__artist__about{
+  display: flex;
+  flex-direction: column;
+}
+
+.artist__info{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.song__artist__listeners{
+  font-size: 0.75rem;
+  color: #ccc8;
+}
+
+.artist__tags{
+  padding-block: 1rem;
+}
+
+.song__artist__bio{
+  padding-block: 1rem;
+  border-top: thin solid #ccc8;
+  display: flex;
+}
+
+.song__artist__bio__container{
+  height: 3rem;
+  overflow: hidden;
+  transition: height 0.5s ease;
+  interpolate-size: allow-keywords;
+}
+
+.arrow__icon{
+  transition: transform 0.3s ease;
+}
+
+.show__info .arrow__icon{
+  transform: rotate(90deg);
+}
+
+.show__info .song__artist__bio__container{
+  height: auto;
+}
+
+.song__artist__bio__button{
+  width: 2rem;
+  height: 2rem;
+  aspect-ratio: 1/1;
+}
+
+.song__artist__more{
+  border-top: thin solid #ccc8;
+}
+
+.song__artist__more{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-block: 1rem;
+}
