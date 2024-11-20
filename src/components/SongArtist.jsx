@@ -7,7 +7,7 @@ import { useState } from "react";
 // Assets
 import arrow from "../assets/icon-arrow-white.svg";
 
-const SongArtist = ({ artist }) => {
+const SongArtist = ({ artist, deezer }) => {
 
   const [showInfo, setShowInfo] = useState(false);
 
@@ -30,9 +30,12 @@ const SongArtist = ({ artist }) => {
       <h4 className="song__artist__title">Acerca del artista</h4>
       <article className="song__artist__container">
         {/* aquí irían las imágenes */}
+        <div className="song__artist__photos">
+
+        </div>
         <div className="song__artist__about">
           <div className="artist__info">
-            <h2 className="song__artist__name">{artist.name}</h2>
+            <h2 className="song__artist__name">{deezer.artist.name}</h2>
             <span className="song__artist__listeners">{artist.stats ? formatNumber(artist.stats.listeners) : "0"} oyentes</span>
           </div>
           <div className="artist__tags">
@@ -61,7 +64,7 @@ const SongArtist = ({ artist }) => {
             <p className="song__artist__bio__wiki">
               <a
                 className="song__link"
-                href={`https://es.wikipedia.org/w/index.php?search=${artist.name}+banda`} target="_blank" rel="noreferrer">
+                href={`https://es.wikipedia.org/w/index.php?search=${artist.name}+grupo`} target="_blank" rel="noreferrer">
                 Wiki del artista
               </a>
             </p>

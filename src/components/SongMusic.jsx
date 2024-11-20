@@ -1,19 +1,36 @@
 // CSS
-import "../css/SongLyrics.css";
+import "../css/SongMusic.css";
+
+// COMPONENTS
+import Message from "./Message";
 
 // Hooks
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
-// Icons
+// Assets
 import arrow from "../assets/icon-arrow-white.svg";
 
 // IMG
 import errImg from "../assets/img-error.webp";
 
-const SongLyrics = ({ title, lyric, music, deezer }) => {
+const SongMusic = ({ lyric, music, deezer }) => {
 
   const [showLyric, setShowLyric] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
 
+  useEffect(() => {
+    console.log("Mostrando detalles")
+    // console.log("Detalles del track: ", music);
+    // console.log("Detalles de la letra: ", lyric);
+    // console.log("Detalles de Deezer: ", deezer);
+  }, []);
+  
+  const handleAudio = () => {
+    isPlaying ? audioRef.current.pause() : audioRef.current.play();
+    setIsPlaying(!isPlaying);
+  };
+  
   if (!lyric || !music) return null;
 
   const { track } = music;
@@ -53,7 +70,7 @@ const SongLyrics = ({ title, lyric, music, deezer }) => {
   }
 
   const getBgImage = imageAlbum => {
-    return imageAlbum.length ? `url(${imageAlbum})` : "none";
+    return imageAlbum.length ? `url(${imageAlbum})` : `${errImg}`;
   }
 
   const styleBg = {
@@ -81,7 +98,7 @@ const SongLyrics = ({ title, lyric, music, deezer }) => {
             <div className="song__data">
               <span className="song__data__texts">
                 <span className="song__data__artist">{track.artist.name}</span>
-                <span className="song__data__title">{title}</span>
+                <span className="song__data__title">{music.track.name}</span>
               </span>
             </div>
           </article>
@@ -112,15 +129,21 @@ const SongLyrics = ({ title, lyric, music, deezer }) => {
                     </div>
                   )
                 }
-                <div className="song__info__detail song__lyric">
-                  <span className="song__info__detail__text">Letra</span>
-                  <div className={`song__lyric__container ${showLyric ? "show__lyric" : ""}`}>
-                    <p className="song__info__detail__lyric">{lyric.lyrics}</p>
-                  </div>
-                  <button className="song__lyric__button" onClick={() => setShowLyric(!showLyric)}>
-                    <img className="arrow__icon" src={arrow} alt="Icono de flecha" />
-                  </button>
-                </div>
+                {
+                  lyric.lyrics
+                  ? (
+                    <div className="song__info__detail song__lyric">
+                      <span className="song__info__detail__text">Letra</span>
+                      <div className={`song__lyric__container ${showLyric ? "show__lyric" : ""}`}>
+                        <p className="song__info__detail__lyric">{lyric.lyrics}</p>
+                      </div>
+                      <button className="song__lyric__button" onClick={() => setShowLyric(!showLyric)}>
+                        <img className="arrow__icon" src={arrow} alt="Icono de flecha" />
+                      </button>
+                    </div>
+                  )
+                  : (<Message text={`No se encontró letra para la canción`} />)
+                }
               </div>
             </section>
             <section className="song__extra__details">
@@ -136,7 +159,7 @@ const SongLyrics = ({ title, lyric, music, deezer }) => {
                       {
                         track.toptags.tag.map((tag, index) =>(
                           <li key={index} className="song__extra__tags__item">
-                            <a className="tag__link" href={tag.url}>{tag.name}</a>
+                            <a className="tag__link" href={tag.url} rel="noreferrer" target="_blank">{tag.name}</a>
                           </li>
                         ))
                       }
@@ -146,42 +169,84 @@ const SongLyrics = ({ title, lyric, music, deezer }) => {
                 <div className="song__extra__album">
                   <h4 className="song__extra__title">Destacado en</h4>
                   <div className="song__extra__album__container">
-                    <a
-                      className="song__extra__album__link"
-                      href={track.album ? track.album.url : "#"}
-                      target="_blank"
-                      rel="noreferrer">
+                    <article className="song__audio__photo">
                       <figure className="song__extra__album__figure">
                         <img
                           className="song__extra__album__img"
-                          src={imageAlbum}
+                          src={deezer.album.cover_medium}
                           onError={e => { e.target.onerror = null; e.target.src = errImg; }}
                           alt="Imagen del álbum"
                         />
-                      </figure>
-                      <div className="song__extra__album__content">
-                        <div className="song__extra__album__texts">
-                          <span className="song__extra__album__text">
-                            {track.album? track.album.title : track.name}
-                          </span>
-                          <span className="song__extra__album__text">
-                            {track.album? track.album.artist : track.artist.name}
-                          </span>
+                        <div className="flex-c-c play__song" onClick={handleAudio}>
                           {
-                            track.listeners && <span className="song__extra__album__text">{formatNumber(track.listeners)} Oyentes</span>
+                            isPlaying ? (
+                              <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                className="icon__pause">
+                                <path
+                                  stroke="none"
+                                  d="M0 0h24v24H0z"
+                                  fill="none"
+                                />
+                                <path
+                                  d="M9 4h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h2a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2z"
+                                />
+                                <path d="M17 4h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h2a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2z" />
+                              </svg>
+                            ) : (
+                              <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                className="icon__play">
+                                <path
+                                  stroke="none"
+                                  d="M0 0h24v24H0z"
+                                  fill="none"
+                                />
+                                <path d="M6 4v16a1 1 0 0 0 1.524 .852l13 -8a1 1 0 0 0 0 -1.704l-13 -8a1 1 0 0 0 -1.524 .852z" />
+                              </svg>
+                            )
                           }
+                          
                         </div>
-                      </div>
-                    </a>
+                      </figure>
+                      <a className="song__extra__album__content" href={track.url ? track.url : "#"} target="_blank" rel="noreferrer">
+                        <div className="song__extra__album__text">
+                          <div className="song__extra__album__texts">
+                            <span className="song__extra__album__text">
+                              {track.album? track.album.title : track.name}
+                            </span>
+                            <span className="song__extra__album__text">
+                              {track.album? track.album.artist : track.artist.name}
+                            </span>
+                            {
+                              track.listeners && <span className="song__extra__album__text">{formatNumber(track.listeners)} Oyentes</span>
+                            }
+                          </div>
+                        </div>
+                      </a>
+                    </article>
                   </div>
                 </div>
+              </div>
+            </section>
+            <section className="song__audio">
+              <div className="song__audio__container">
+                <audio
+                  ref={audioRef}
+                  src={deezer.preview}
+                  className="song__audio__player"
+                ></audio>
               </div>
             </section>
           </article>
         </div>
       </div>
     </section>
-  )
+  );
 };
 
-export default SongLyrics;
+export default SongMusic;
