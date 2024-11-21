@@ -14,7 +14,7 @@ const SongDetails = ({ search, lyrics, artist, music, deezer }) => {
       }
       {
         artist && artist.artist && artist.artist.bio
-        ? (<SongArtist artist={artist.artist} deezer={deezer} />)
+        ? (<SongArtist artist={artist.artist} deezer={deezer} music={music} />)
         : (<Message text={`No se encontró info de "${search.artist}"`} />)
       }
     </section>

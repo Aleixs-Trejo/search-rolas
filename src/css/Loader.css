@@ -1,5 +1,6 @@
 .lds-ring {
-  color: #28a4a0
+  color: #28a4a0;
+  margin-inline: auto;
 }
 
 .lds-ring,

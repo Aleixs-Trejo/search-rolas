@@ -97,7 +97,7 @@ input[type="number"]::-webkit-outer-spin-button{
 /***************** UTILITIES *****************/
 .container{
   width: 95%;
-  max-width: 75rem;
+  max-width: 64rem;
   margin-inline: auto;
   overflow: hidden;
 }

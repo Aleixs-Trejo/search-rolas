@@ -4,6 +4,55 @@
   gap: 1rem;
 }
 
+.artist__bio__container{
+  position: relative;
+  width: 100%;
+  max-width: 30rem;
+  margin-inline: auto;
+  aspect-ratio: 1/1;
+}
+
+.artist__bg{
+  background-image: var(--bg-img);
+  background-color: #1e1e2e88;
+  background-blend-mode: multiply;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  inset: 0;
+}
+
+.artist__text__container{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.artist__text{
+  width: 100%;
+  display: flex;
+  height: min(65%, 15rem);
+  padding: 1rem;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-image: linear-gradient(to top, #1e1e2e88 35%, transparent); 
+}
+
+.artist__text__bio{
+  height: 100%;
+  overflow-y: auto;
+}
+
+.artist__bio__text{
+  color: #f1f1f1;
+  & a{
+    font-weight: 700;
+  }
+}
+
 .tag__link{
   color: #fff;
 }

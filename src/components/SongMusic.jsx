@@ -30,18 +30,15 @@ const SongMusic = ({ lyric, music, deezer }) => {
     isPlaying ? audioRef.current.pause() : audioRef.current.play();
     setIsPlaying(!isPlaying);
   };
+
+  const handleEnded = () => {
+    audioRef.current.currentTime = 0;
+    setIsPlaying(false);
+  };
   
   if (!lyric || !music) return null;
-
   const { track } = music;
-
-  const longAlbum = track.album ? track.album.image.length - 1 : null;
-
-  let imageAlbum = "";
-
-  if (longAlbum > 1) {
-    imageAlbum = track.album.image[longAlbum]["#text"];
-  }
+  let imageAlbum = deezer.album.cover_medium;
 
   const formatNumber = (num) => {
     if (num >= 1e12) {
@@ -70,7 +67,7 @@ const SongMusic = ({ lyric, music, deezer }) => {
   }
 
   const getBgImage = imageAlbum => {
-    return imageAlbum.length ? `url(${imageAlbum})` : `${errImg}`;
+    return imageAlbum ? `url(${imageAlbum})` : `url(${"../assets/img-error.webp"})`;
   }
 
   const styleBg = {
@@ -81,7 +78,7 @@ const SongMusic = ({ lyric, music, deezer }) => {
     bottom: 0,
     zIndex: 1,
     backgroundImage: `
-      linear-gradient(to right, #6c7086 0%, rgba(255, 255, 255, 0) 15%),
+      linear-gradient(to right, #1e1e2e 0%, rgba(255, 255, 255, 0) 5%),
       ${getBgImage(imageAlbum)}`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "contain",
@@ -95,7 +92,7 @@ const SongMusic = ({ lyric, music, deezer }) => {
           <article className="song__header__content">
             <div className="song__bg" style={styleBg}></div>
             <div className="song__bg--color"></div>
-            <div className="song__data">
+            <div className="song__data container">
               <span className="song__data__texts">
                 <span className="song__data__artist">{track.artist.name}</span>
                 <span className="song__data__title">{music.track.name}</span>
@@ -223,7 +220,7 @@ const SongMusic = ({ lyric, music, deezer }) => {
                               {track.album? track.album.artist : track.artist.name}
                             </span>
                             {
-                              track.listeners && <span className="song__extra__album__text">{formatNumber(track.listeners)} Oyentes</span>
+                              track.listeners && <span className="song__extra__album__text">{formatNumber(track.listeners)} Oyente(s)</span>
                             }
                           </div>
                         </div>
@@ -238,6 +235,7 @@ const SongMusic = ({ lyric, music, deezer }) => {
                 <audio
                   ref={audioRef}
                   src={deezer.preview}
+                  onEnded={handleEnded}
                   className="song__audio__player"
                 ></audio>
               </div>
